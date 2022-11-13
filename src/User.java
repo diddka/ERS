@@ -1,6 +1,9 @@
+import java.util.List;
+
 public abstract class User {
 
     public String firstName, lastName, email, city, username, password;
+    static List<Client> clients;
 
     public User(String[] parts) {
         firstName = parts[0];
@@ -10,12 +13,11 @@ public abstract class User {
         username = parts[4];
         password = parts[5];
     }
-
-
     public static void viewClientsList() {
+        clients = ReadFile.readClientFile();
         System.out.println("Clients list: ");
         int numeric = 1;
-        for (Client client : ReadFile.readClientFile()) {
+        for (Client client :clients ) {
             System.out.println(numeric + ". " + client);
             numeric++;
         }

@@ -1,7 +1,9 @@
 import java.io.FileNotFoundException;
+import java.util.List;
 import java.util.Scanner;
 
 public class Admin extends User {
+    static List<Employee> employeeList;
 
     public Admin(String[] parts) {
         super(parts);
@@ -26,8 +28,9 @@ public class Admin extends User {
     }
 
     public static void viewEmployeesList() {
+        employeeList = ReadFile.readEmployeeFile();
         System.out.println("Employees list: ");
-        for (Employee employee : ReadFile.readEmployeeFile()) {
+        for (Employee employee : employeeList) {
             System.out.println(employee);
         }
     }
