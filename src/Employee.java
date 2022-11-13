@@ -1,9 +1,10 @@
-import java.time.LocalDate;
-import java.time.temporal.ChronoField;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class Employee extends User {
     static Scanner scanner = new Scanner(System.in);
+    static List<Client> clientList;
 
     public Employee(String[] parts) {
         super(parts);
@@ -28,44 +29,42 @@ public class Employee extends User {
     public static void createClientProtocol(String username) {
         Map<String, Employee> employeeMap = Database.load();
         Employee employee = employeeMap.get(username);
-
+        String week = generateCurrentDateAndWeekForProtocol().get(0);
+        String date = generateCurrentDateAndWeekForProtocol().get(1);
+        String hours = inputHoursOfWork();
+        String selectedClient = selectClientFromList(username);
         String protocolFile = "Protocol.csv";
         try {
-            WriteFile.writeEmployeeProtocol(Employee.inputProtocol(username), employee.firstName, employee.lastName);
+           WriteFile.writeEmployeeProtocol(new Protocol(week,date,selectedClient,hours), employee.firstName, employee.lastName);
         } catch (Exception e) {
             System.out.println(username + ", the Protocol can't be write to file " + protocolFile);
         }
     }
 
-
-    public static String generateWeekOfYearFromInputDate(String date) {
-        String[] values = date.split("\\.");
-        int day = Integer.parseInt(values[0]);
-        int month = Integer.parseInt(values[1]);
-        int year = Integer.parseInt(values[2]);
-        LocalDate date1 = LocalDate.of(year, month, day);
-        int weekOfYear = date1.get(ChronoField.ALIGNED_WEEK_OF_YEAR);
-        return String.valueOf(weekOfYear);
-    }
-
-    public static Protocol inputProtocol(String username) {
-        System.out.print("Enter date : ");
-        String data = scanner.nextLine();
+    private static String inputHoursOfWork() {
         System.out.print("Enter how many hours you have work for this client? : ");
         String hours = scanner.next();
-
-        return new Protocol(generateWeekOfYearFromInputDate(data), data, selectClientFromList(username), hours);
+        return hours;
+    }
+    private static List<String> generateCurrentDateAndWeekForProtocol(){
+        List<String> weekAndDate = new ArrayList<>();
+        DateTimeFormatter week = DateTimeFormatter.ofPattern("ww");
+        DateTimeFormatter date = DateTimeFormatter.ofPattern("dd.MM.yyyy,HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
+        weekAndDate.add(week.format(now));
+        weekAndDate.add(date.format(now));
+        return weekAndDate;
     }
 
-    public static String selectClientFromList(String username) {
+    private static String selectClientFromList(String username) {
+        clientList = ReadFile.readClientFile();
         User.viewClientsList();
         System.out.println("Let's select a client, to do this enter a number of client: ");
         int number = scanner.nextInt();
-        String employeeChoice = ReadFile.readClientFile().get(number - 1).toString();
+        String employeeChoice = clientList.get(number - 1).toString();
         System.out.println(employeeChoice);
         System.out.println(username + ", your protocol is created!!!");
         return employeeChoice;
-
     }
 
     @Override

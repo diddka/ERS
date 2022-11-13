@@ -2,9 +2,10 @@ import java.io.*;
 import java.util.*;
 
 public class ReadFile {
-
+    static List<Client> clients;
+    static List<Employee> employees;
     public static List<Client> readClientFile() {
-        List<Client> clients = new ArrayList<>();
+        clients = new ArrayList<>();
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader("Clients.csv"))) {
             String currentLine;
             while ((currentLine = bufferedReader.readLine()) != null) {
@@ -23,7 +24,7 @@ public class ReadFile {
     }
 
     public static List<Employee> readEmployeeFile() {
-        List<Employee> employees = new ArrayList<>();
+        employees = new ArrayList<>();
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader("employees.csv"))) {
             String currentLine;
             while ((currentLine = bufferedReader.readLine()) != null) {
@@ -34,15 +35,31 @@ public class ReadFile {
                 String country = detailed[3];
                 String username = detailed[4];
                 String password = detailed[5];
-
                 employees.add(new Employee(new String[]{first_name, last_name, email, country, username, password}));
             }
-
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
         return employees;
     }
-
+    public static List<String> readProtocolFile() {
+        List<String> protocolList = new ArrayList<>();
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader("Protocol.csv"))) {
+            String currentLine;
+            while ((currentLine = bufferedReader.readLine()) != null) {
+                String[] detailed = currentLine.split(",");
+                String first_name = detailed[0];
+                String last_name = detailed[1];
+                String week = detailed[2];
+                String date = detailed[3];
+                String username = detailed[4];
+                String password = detailed[5];
+              //  protocolList.add(first_name, last_name, week, date, username, password);
+            }
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
+        return protocolList;
+    }
 
 }
