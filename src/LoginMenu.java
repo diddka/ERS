@@ -14,13 +14,7 @@ public class LoginMenu {
         String choice = scanner.next();
         switch (choice) {
             case "1" -> AdminMenu.loginAsAdmin();
-            case "2" -> {
-                try {
-                    EmployeeMenu.loginAsEmployee();
-                } catch (Exception e) {
-                    throw new RuntimeException(e.getMessage());
-                }
-            }
+            case "2" -> EmployeeMenu.loginAsEmployee();
             case "3" -> System.out.println("Logging out... See you next time!");
             default -> {
                 System.out.println("Invalid choice. Try again!");

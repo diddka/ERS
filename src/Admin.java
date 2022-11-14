@@ -13,8 +13,9 @@ public class Admin extends User {
         String clientsFile = "Clients.csv";
         try {
             WriteFile.writeNewClients(Client.input());
+            System.out.println("The client is added!");
         } catch (Exception e) {
-            System.out.println("Can't write to file " + clientsFile);
+            System.out.println("Can't write to file " + clientsFile + " " + e.getMessage());
         }
     }
 
@@ -23,15 +24,19 @@ public class Admin extends User {
         try {
             WriteFile.writeNewEmployees(Employee.input());
         } catch (Exception e) {
-            System.out.println("Can't write to file " + employeesFile);
+            System.out.println("Can't write to file " + employeesFile + " " + e.getMessage());
         }
     }
 
     public static void viewEmployeesList() {
         employeeList = ReadFile.readEmployeeFile();
-        System.out.println("Employees list: ");
-        for (Employee employee : employeeList) {
-            System.out.println(employee);
+        if (!employeeList.isEmpty()) {
+            System.out.println("Employees list: ");
+            for (Employee employee : employeeList) {
+                System.out.println(employee);
+            }
+        } else {
+            System.out.println("Employees list is empty!");
         }
     }
 
@@ -48,7 +53,7 @@ public class Admin extends User {
     public static void searchByEverythingInFile() {
         System.out.println("Enter that you want to search: ");
         Scanner scanner = new Scanner(System.in);
-        String search = scanner.nextLine();
+        String search = scanner.nextLine().trim();
         try {
             FileSearch.parseFile("Protocol.csv", search);
         } catch (FileNotFoundException e) {

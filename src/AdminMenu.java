@@ -5,9 +5,9 @@ public class AdminMenu {
 
     public static void loginAsAdmin() {
         System.out.print("Enter your name: ");
-        String name = scanner.nextLine();
+        String name = scanner.nextLine().trim();
         System.out.print("Enter your password: ");
-        String password = scanner.nextLine();
+        String password = scanner.nextLine().trim();
         if (name.equals("admin") && password.equals("admin")) {
             System.out.println("Welcome, user " + name + "!");
             viewAdminMenu();
@@ -33,7 +33,7 @@ public class AdminMenu {
 
     public static void enterAdminChoice() {
         System.out.print("Choose an option from 1 to 7: ");
-        String choice = scanner.next();
+        String choice = scanner.next().trim();
         switch (choice) {
             case "1" -> {
                 Admin.addClient();
@@ -70,7 +70,7 @@ public class AdminMenu {
 
     public static void showEmployeeStatistics() {
         System.out.print("Select an option to show an employee statistics: ");
-        String choice = scanner.next();
+        String choice = scanner.next().trim();
         switch (choice) {
             case "1" -> {
                 Admin.searchEmployeeByName();
