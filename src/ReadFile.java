@@ -15,7 +15,6 @@ public class ReadFile {
                 String expirationDate = detailed[2];
                 clients.add(new Client(name, project, expirationDate));
             }
-
             clients.sort(Comparator.comparing(Client::getContractExpirationDate).thenComparing(Client::getClientName).thenComparing(Client::getProjectName));
         } catch (IOException ioe) {
             ioe.printStackTrace();
