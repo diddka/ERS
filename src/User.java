@@ -2,7 +2,12 @@ import java.util.List;
 
 public abstract class User {
 
-    public String firstName, lastName, email, city, username, password;
+    protected String firstName;
+    protected String lastName;
+    protected String email;
+    protected String city;
+    protected String username;
+    protected String password;
     static List<Client> clients;
 
     public User(String[] parts) {
@@ -13,13 +18,19 @@ public abstract class User {
         username = parts[4];
         password = parts[5];
     }
+
+
     public static void viewClientsList() {
         clients = ReadFile.readClientFile();
-        System.out.println("Clients list: ");
-        int numeric = 1;
-        for (Client client :clients ) {
-            System.out.println(numeric + ". " + client);
-            numeric++;
+        if (!clients.isEmpty()) {
+            System.out.println("Clients list: ");
+            int numeric = 1;
+            for (Client client : clients) {
+                System.out.println(numeric + ". " + client);
+                numeric++;
+            }
+        } else {
+            System.out.println("Client's list is empty!");
         }
     }
 

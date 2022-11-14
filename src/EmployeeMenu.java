@@ -9,13 +9,13 @@ public class EmployeeMenu {
         Scanner keyboard = new Scanner(System.in);
         String username, password;
         System.out.println("Enter username: ");
-        username = keyboard.nextLine();
+        username = keyboard.nextLine().trim();
         if (!employeeMap.containsKey(username)) {
             System.out.println("That username does not exist! Try again.");
             loginAsEmployee();
         }
         System.out.println("Enter password: ");
-        password = keyboard.nextLine();
+        password = keyboard.nextLine().trim();
         Employee employee = employeeMap.get(username);
         if ((employee.password).equals(password)) {
             System.out.println("Successfully logged in.");
@@ -40,7 +40,7 @@ public class EmployeeMenu {
 
     public static void enterEmployeeChoice(String username) {
         System.out.print("Choose an option from 1 to 4: ");
-        String choice = scanner.next();
+        String choice = scanner.next().trim();
         switch (choice) {
             case "1" -> {
                 Employee.createClientProtocol(username);

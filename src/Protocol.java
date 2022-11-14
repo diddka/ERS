@@ -3,7 +3,7 @@ public class Protocol {
     protected String hoursOfWorkForThisClient;
     protected String date;
     protected String weekOfYear;
-    String clientsFromList;
+    protected String clientsFromList;
 
 
     public Protocol(String weekOfYear, String date, String clientsFromList, String hoursOfWorkForThisClient) {
@@ -12,7 +12,6 @@ public class Protocol {
         this.date = date;
         this.clientsFromList = clientsFromList;
         this.hoursOfWorkForThisClient = hoursOfWorkForThisClient;
-
 
 
     }
