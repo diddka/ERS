@@ -119,8 +119,8 @@ public class Employee extends User {
     @Override
     public String toString() {
         return "Employee{" +
-                "first_name = '" + firstName + '\'' +
-                ", last_name='" + lastName + '\'' +
+                "firstName = '" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", country='" + city + '\'' +
                 ", username='" + username + '\'' +

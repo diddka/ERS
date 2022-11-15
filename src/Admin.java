@@ -1,9 +1,11 @@
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class Admin extends User {
     static List<Employee> employeeList;
+    static List<Protocol> protocolList;
 
     public Admin(String[] parts) {
         super(parts);
@@ -20,7 +22,7 @@ public class Admin extends User {
     }
 
     public static void registerNewEmployee() {
-        String employeesFile = "employees.csv";
+        String employeesFile = "Employees.csv";
         try {
             WriteFile.writeNewEmployees(Employee.input());
         } catch (Exception e) {
@@ -41,11 +43,13 @@ public class Admin extends User {
     }
 
     public static void searchEmployeeByName() {
+        protocolList = new ArrayList<>();
         System.out.println("Enter the employee name for search: ");
 
     }
 
     public static void searchProtocolByWeek() {
+        protocolList = new ArrayList<>();
         System.out.println("Enter a number of week to search: ");
 
     }
@@ -60,7 +64,5 @@ public class Admin extends User {
             throw new RuntimeException(e.getMessage());
         }
     }
-
-
 }
 
