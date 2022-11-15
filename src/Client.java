@@ -104,6 +104,9 @@ public class Client {
 
     @Override
     public String toString() {
-        return "The client name is ~ " + clientName + ", with a project: " + projectName + " and contract expiration date: " + contractExpirationDate;
+        return "The client name is ~ " + clientName +
+                ", with a project: " + projectName +
+                " and contract expiration date: " +
+                contractExpirationDate;
     }
 }
