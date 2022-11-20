@@ -37,7 +37,6 @@ public class EmployeeMenu {
         enterEmployeeChoice(name);
     }
 
-
     public static void enterEmployeeChoice(String username) {
         System.out.print("Choose an option from 1 to 4: ");
         String choice = scanner.next().trim();

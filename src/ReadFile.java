@@ -48,10 +48,10 @@ public class ReadFile {
             String currentLine;
             while ((currentLine = bufferedReader.readLine()) != null) {
                 String[] detailed = currentLine.split(",");
-                String employeeName = detailed[0] + "," + detailed[1];
+                String employeeName = detailed[0] + " " + detailed[1];
                 String week = detailed[2] ;
-                String dateAndTime = detailed[3] + "," + detailed[4];
-                String client = detailed[5] + "," + detailed[6];
+                String dateAndTime = detailed[3] + " " + detailed[4];
+                String client = detailed[5] + " " + detailed[6];
                 String hourOfWork = detailed[7];
                 protocolList.add(new Protocol(employeeName, week, dateAndTime, client, hourOfWork));
             }
