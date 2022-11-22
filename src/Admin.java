@@ -42,24 +42,71 @@ public class Admin extends User {
         }
     }
 
-    public static void searchEmployeeByName() {
-        protocolList = ReadFile.readProtocolFile();
-        System.out.println("Enter the employee name for search: ");
 
-    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     public static void searchProtocolByWeek() {
         protocolList = ReadFile.readProtocolFile();
         System.out.println("Enter a number of week to search: ");
         String searchWeek = scanner.next();
         Protocol protocolLastIndex = protocolList.get(protocolList.size()-1);
+        Protocol protocolFirstIndex = protocolList.get(1);
+        int lastWeek = Integer.parseInt(protocolLastIndex.weekOfYear);
+        int firsWeek = Integer.parseInt(protocolFirstIndex.weekOfYear);
+        int findWeek = Integer.parseInt(searchWeek);
         if (checkMethodsInputIfDigit(searchWeek) ){
-            for (Protocol pr : protocolList) {
+            for (Protocol protocol : protocolList) {
                 try {
-                    if (searchWeek.equals(pr.weekOfYear)) {
-                        System.out.println(pr);
-                    }else if(Integer.parseInt(searchWeek) > Integer.parseInt(protocolLastIndex.weekOfYear)) {
-                        System.out.println("Last number of week in protocol list is \"" + Integer.parseInt(protocolLastIndex.weekOfYear) + "\" Please enter a number lower than this!!!"  );
+                    if (searchWeek.equals(protocol.weekOfYear)) {
+                        System.out.println(protocol);
+                    }else if( findWeek > lastWeek || findWeek <= 0 || findWeek < firsWeek ) {
+                        System.out.println("There is NO such week number!!! Enter number between \"" + protocolFirstIndex.weekOfYear + "\" and \"" + protocolLastIndex.weekOfYear + "\"");
                         break;
                     }
 
@@ -69,7 +116,7 @@ public class Admin extends User {
                 }
             }
         }
-        askForANewSearch();
+        AdminMenu.viewAdminStatisticMenu();
     }
 
     protected static void askForANewSearch() {
