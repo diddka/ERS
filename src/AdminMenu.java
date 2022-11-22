@@ -16,8 +16,6 @@ public class AdminMenu {
             LoginMenu.seeMainMenu();
         }
     }
-
-
     public static void viewAdminMenu() {
         System.out.println("""
                 What do you want to do?\s
@@ -66,7 +64,6 @@ public class AdminMenu {
             }
         }
     }
-
 
     public static void showEmployeeStatistics() {
         System.out.print("Select an option to show an employee statistics: ");
