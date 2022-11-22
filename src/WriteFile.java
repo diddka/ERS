@@ -15,7 +15,7 @@ public class WriteFile {
     public static void writeNewEmployees(Employee employee) {
         try {
             BufferedWriter fileWrite = new BufferedWriter(new FileWriter("Employees.csv", true));
-            fileWrite.write((employee.firstName + "," + employee.lastName + "," + employee.email + "," + employee.city + "," + employee.username + "," + employee.password) + System.lineSeparator());
+            fileWrite.write((employee.firstName + "," + employee.lastName + "," + employee.email + "," + employee.city + "," + employee.username + "," + employee.password ) + System.lineSeparator());
             fileWrite.close();
         } catch (Exception e) {
             System.out.println(e.getMessage());

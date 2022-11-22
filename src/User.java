@@ -8,6 +8,7 @@ public abstract class User {
     protected String city;
     protected String username;
     protected String password;
+    protected String validateUser;
     static List<Client> clients;
 
 
@@ -18,6 +19,7 @@ public abstract class User {
         city = parts[3];
         username = parts[4];
         password = parts[5];
+        validateUser = parts[6];
     }
 
 

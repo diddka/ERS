@@ -7,10 +7,11 @@ public class Admin extends User {
     static List<Employee> employeeList;
     static List<Protocol> protocolList;
 
+
     public Admin(String[] parts) {
         super(parts);
-    }
 
+    }
 
     public static void addClient() {
         String clientsFile = "Clients.csv";
@@ -26,6 +27,7 @@ public class Admin extends User {
         String employeesFile = "Employees.csv";
         try {
             WriteFile.writeNewEmployees(Employee.input());
+            System.out.println("The employee is added!");
         } catch (Exception e) {
             System.out.println("Can't write to file " + employeesFile + " " + e.getMessage());
         }
@@ -57,21 +59,22 @@ public class Admin extends User {
             System.out.println("The search cannot be empty!");
         }
     }
+
     public static void searchProtocolByWeek() {
         protocolList = ReadFile.readProtocolFile();
         System.out.println("Enter a number of week to search: ");
         String searchWeek = scanner.next();
-        Protocol protocolLastIndex = protocolList.get(protocolList.size()-1);
+        Protocol protocolLastIndex = protocolList.get(protocolList.size() - 1);
         Protocol protocolFirstIndex = protocolList.get(1);
         int lastWeek = Integer.parseInt(protocolLastIndex.weekOfYear);
         int firsWeek = Integer.parseInt(protocolFirstIndex.weekOfYear);
         int findWeek = Integer.parseInt(searchWeek);
-        if (checkMethodsInputIfDigit(searchWeek) ){
+        if (checkMethodsInputIfDigit(searchWeek)) {
             for (Protocol protocol : protocolList) {
                 try {
                     if (searchWeek.equals(protocol.weekOfYear)) {
                         System.out.println(protocol);
-                    }else if( findWeek > lastWeek || findWeek <= 0 || findWeek < firsWeek ) {
+                    } else if (findWeek > lastWeek || findWeek <= 0 || findWeek < firsWeek) {
                         System.out.println("There is NO such week number!!! Enter number between \"" + protocolFirstIndex.weekOfYear + "\" and \"" + protocolLastIndex.weekOfYear + "\"");
                         break;
                     }

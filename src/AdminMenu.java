@@ -1,21 +1,32 @@
+import java.util.Map;
 import java.util.Scanner;
 
 public class AdminMenu {
     static Scanner scanner = new Scanner(System.in);
 
     public static void loginAsAdmin() {
-        System.out.print("Enter your name: ");
-        String name = scanner.nextLine().trim();
-        System.out.print("Enter your password: ");
-        String password = scanner.nextLine().trim();
-        if (name.equals("admin") && password.equals("admin")) {
-            System.out.println("Welcome, user " + name + "!");
-            viewAdminMenu();
-        } else {
-            System.out.println("Incorrect Username or Password! Try again.");
-            LoginMenu.seeMainMenu();
+        Map<String, Employee> employeeMap = Database.load();
+        Scanner keyboard = new Scanner(System.in);
+        String username, password;
+        System.out.println("Enter username: ");
+        username = keyboard.nextLine().trim();
+        if (!employeeMap.containsKey(username)) {
+            System.out.println("That username does not exist! Try again.");
+            loginAsAdmin();
         }
+        System.out.println("Enter password: ");
+        password = keyboard.nextLine().trim();
+        Employee employee = employeeMap.get(username);
+        if ((employee.password).equals(password) && employee.validateUser.equals("admin")) {
+            System.out.println("Successfully logged in.");
+            System.out.println("Welcome, " + employee.validateUser + ": " + employee.firstName + " " + employee.lastName);
+            viewAdminMenu();
+        } else
+            System.out.println("Incorrect password. Try again.");
+        loginAsAdmin();
+
     }
+
     public static void viewAdminMenu() {
         System.out.println("""
                 What do you want to do?\s
@@ -30,7 +41,7 @@ public class AdminMenu {
     }
 
     public static void enterAdminChoice() {
-        System.out.print("Choose an option from 1 to 7: ");
+        System.out.print("\nChoose an option from 1 to 7: ");
         String choice = scanner.next().trim();
         switch (choice) {
             case "1" -> {
@@ -81,8 +92,7 @@ public class AdminMenu {
                 Admin.searchByEverythingInFile();
                 viewAdminStatisticMenu();
             }
-            case "4" ->
-                    LoginMenu.seeMainMenu();
+            case "4" -> LoginMenu.seeMainMenu();
             default -> {
                 System.out.println("Invalid input. Try again!");
                 showEmployeeStatistics();
