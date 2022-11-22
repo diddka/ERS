@@ -79,27 +79,27 @@ public class Client {
 
     protected static Client input() {
         System.out.print("Enter a Client name: ");
-        String name = setClientName();
+        String name = Validation.checkIsValidInput();
         System.out.print("Enter a Project name: ");
-        String projectName = scanner.nextLine().trim();
+        String projectName = Validation.checkIsValidInput();
         System.out.print("Enter the contract expiration date: ");
         String contractExpirationDate = setContractExpirationDate();
         return new Client(name, projectName, contractExpirationDate);
     }
 
-    private static String setClientName() {
-        String name = null;
-        boolean isValidName = true;
-        while (isValidName) {
-            name = scanner.nextLine().trim();
-            if (name.trim().isEmpty()) {
-                System.out.println("Client name cannot be empty! Try again!");
-                continue;
-            }
-            isValidName = false;
-        }
-        return name;
-    }
+//    private static String setClientName() {
+//        String name = null;
+//        boolean isValidName = true;
+//        while (isValidName) {
+//            name = scanner.nextLine().trim();
+//            if (name.trim().isEmpty()) {
+//                System.out.println("Client name cannot be empty! Try again!");
+//                continue;
+//            }
+//            isValidName = false;
+//        }
+//        return name;
+//    }
 
 
     @Override

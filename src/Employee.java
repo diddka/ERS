@@ -12,17 +12,17 @@ public class Employee extends User {
 
     protected static Employee input() {
         System.out.print("Enter an Employee first name: ");
-        String firstName = scanner.nextLine().trim();
+        String firstName = Validation.checkIsValidInput();
         System.out.print("Enter an Employee last name: ");
-        String lastName = scanner.nextLine().trim();
+        String lastName = Validation.checkIsValidInput();
         System.out.print("Enter an Employee email: ");
-        String email = scanner.nextLine().trim();
+        String email = Validation.checkIsValidInput();
         System.out.print("Enter an Employee city: ");
-        String city = scanner.nextLine().trim();
+        String city = Validation.checkIsValidInput();
         System.out.print("Enter an Employee username: ");
-        String username = scanner.nextLine().trim();
+        String username = Validation.checkIsValidInput();
         System.out.print("Enter an Employee password: ");
-        String password = scanner.nextLine().trim();
+        String password = Validation.checkIsValidInput();
         return new Employee(new String[]{firstName, lastName, email, city, username, password});
     }
 

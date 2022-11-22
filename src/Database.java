@@ -8,11 +8,11 @@ public class Database {
     public static Map<String, Employee> load() {
         Map<String, Employee> employeeMap = new HashMap<>();
         try {
-            Scanner data_store = new Scanner(new File("employees.csv"));
+            Scanner data = new Scanner(new File("Employees.csv"));
 
-            while (data_store.hasNextLine()) {
-                String[] split_string = data_store.nextLine().split(",");
-                Employee employee = new Employee(split_string);
+            while (data.hasNextLine()) {
+                String[] split = data.nextLine().split(",");
+                Employee employee = new Employee(split);
                 employeeMap.put(employee.username, employee);
             }
         } catch (FileNotFoundException e) {
