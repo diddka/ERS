@@ -10,6 +10,7 @@ public abstract class User {
     protected String password;
     static List<Client> clients;
 
+
     public User(String[] parts) {
         firstName = parts[0];
         lastName = parts[1];
