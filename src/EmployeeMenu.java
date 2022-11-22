@@ -17,9 +17,9 @@ public class EmployeeMenu {
         System.out.println("Enter password: ");
         password = keyboard.nextLine().trim();
         Employee employee = employeeMap.get(username);
-        if ((employee.password).equals(password)) {
+        if ((employee.password).equals(password) && employee.validateUser.equals("employee")) {
             System.out.println("Successfully logged in.");
-            System.out.println("Welcome " + employee.firstName + " " + employee.lastName);
+            System.out.println("Welcome, " + employee.validateUser + ": " + employee.firstName + " " + employee.lastName);
             viewEmployeeMenu(username);
         } else
             System.out.println("Incorrect password. Try again.");

@@ -35,7 +35,8 @@ public class ReadFile {
                 String country = detailed[3];
                 String username = detailed[4];
                 String password = detailed[5];
-                employees.add(new Employee(new String[]{first_name, last_name, email, country, username, password}));
+                String validateEmployee = detailed[6];
+                employees.add(new Employee(new String[]{first_name, last_name, email, country, username, password, validateEmployee}));
             }
         } catch (IOException ioe) {
             ioe.printStackTrace();
