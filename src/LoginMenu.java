@@ -11,7 +11,7 @@ public class LoginMenu {
 
     public static void selectOption() {
         System.out.print("Choose an option from 1 to 3: ");
-        String choice = scanner.next();
+        String choice = scanner.nextLine();
         switch (choice) {
             case "1" -> AdminMenu.loginAsAdmin();
             case "2" -> EmployeeMenu.loginAsEmployee();

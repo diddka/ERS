@@ -5,7 +5,6 @@ public class Protocol {
     protected String weekOfYear;
     protected String clientsFromList;
 
-
     public Protocol(String weekOfYear, String date, String clientsFromList, String hoursOfWorkForThisClient) {
         this.weekOfYear = weekOfYear;
         this.date = date;
@@ -30,4 +29,6 @@ public class Protocol {
                 ", hoursOfWorkForThisClient='" + hoursOfWorkForThisClient + '\'' +
                 '}';
     }
+
+
 }
