@@ -82,7 +82,7 @@ public class Admin extends User {
                 }
             }
         }
-        AdminMenu.viewAdminStatisticMenu();
+        askForANewSearch();
     }
 
     protected static void askForANewSearch() {
