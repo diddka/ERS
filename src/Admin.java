@@ -57,6 +57,60 @@ public class Admin extends User {
             System.out.println("The search cannot be empty!");
         }
     }
+    public static void searchProtocolByWeek() {
+        protocolList = ReadFile.readProtocolFile();
+        System.out.println("Enter a number of week to search: ");
+        String searchWeek = scanner.next();
+        Protocol protocolLastIndex = protocolList.get(protocolList.size()-1);
+        Protocol protocolFirstIndex = protocolList.get(1);
+        int lastWeek = Integer.parseInt(protocolLastIndex.weekOfYear);
+        int firsWeek = Integer.parseInt(protocolFirstIndex.weekOfYear);
+        int findWeek = Integer.parseInt(searchWeek);
+        if (checkMethodsInputIfDigit(searchWeek) ){
+            for (Protocol protocol : protocolList) {
+                try {
+                    if (searchWeek.equals(protocol.weekOfYear)) {
+                        System.out.println(protocol);
+                    }else if( findWeek > lastWeek || findWeek <= 0 || findWeek < firsWeek ) {
+                        System.out.println("There is NO such week number!!! Enter number between \"" + protocolFirstIndex.weekOfYear + "\" and \"" + protocolLastIndex.weekOfYear + "\"");
+                        break;
+                    }
+
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                    searchProtocolByWeek();
+                }
+            }
+        }
+        AdminMenu.viewAdminStatisticMenu();
+    }
+
+    protected static void askForANewSearch() {
+        System.out.println("""
+                Did you want a new search by week?
+                \t1. Yes
+                \t2. No""");
+        String answer = scanner.next();
+        while (checkMethodsInputIfDigit(answer)) {
+            switch (answer) {
+                case "1" -> searchProtocolByWeek();
+                case "2" -> AdminMenu.viewAdminMenu();
+                default -> System.out.println("Incorrect input!");
+            }
+            askForANewSearch();
+        }
+    }
+
+    protected static boolean checkMethodsInputIfDigit(String input) {
+        for (char c : input.toCharArray()) {
+            if (Character.isAlphabetic(c)) {
+                System.out.println("INVALID INPUT!!! ENTER A NUMBER!!!");
+                askForANewSearch();
+                return false;
+            }
+        }
+        return true;
+    }
 
     private static void printTheProtocolOfTheFindedEmployee(String search) {
         if (checkInputIsDigit(search)) {
@@ -94,12 +148,6 @@ public class Admin extends User {
         return true;
     }
 
-
-    public static void searchProtocolByWeek() {
-        protocolList = ReadFile.readProtocolFile();
-        System.out.println("Enter a number of week to search: ");
-    }
-
     public static void searchByEverythingInFile() {
         System.out.println("Enter that you want to search: ");
         String search = scanner.nextLine().trim();
@@ -112,4 +160,3 @@ public class Admin extends User {
 
 
 }
-
