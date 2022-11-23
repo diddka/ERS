@@ -4,7 +4,7 @@ import java.util.Scanner;
 public class AdminMenu {
     static Scanner scanner = new Scanner(System.in);
 
-    public static void loginAsAdmin() {
+    protected static void loginAsAdmin() {
         Map<String, Employee> employeeMap = Database.load();
         Scanner keyboard = new Scanner(System.in);
         String username, password;
@@ -17,7 +17,7 @@ public class AdminMenu {
         System.out.println("Enter password: ");
         password = keyboard.nextLine().trim();
         Employee employee = employeeMap.get(username);
-        if ((employee.password).equals(password) && employee.validateUser.equals("admin")) {
+        if ((employee.password).equals(password) && employee.validateUser.equalsIgnoreCase("admin")) {
             System.out.println("Successfully logged in.");
             System.out.println("Welcome, " + employee.validateUser + ": " + employee.firstName + " " + employee.lastName);
             viewAdminMenu();
@@ -27,9 +27,9 @@ public class AdminMenu {
 
     }
 
-    public static void viewAdminMenu() {
+    protected static void viewAdminMenu() {
         System.out.println("""
-                What do you want to do?\s
+                \nWhat do you want to do?\s
                 \t1. Add new Client; \s
                 \t2. Register new employees; \s
                 \t3. Show employees statistics; \s
@@ -40,7 +40,7 @@ public class AdminMenu {
         enterAdminChoice();
     }
 
-    public static void enterAdminChoice() {
+    private static void enterAdminChoice() {
         System.out.print("\nChoose an option from 1 to 7: ");
         String choice = scanner.next().trim();
         switch (choice) {
@@ -76,8 +76,8 @@ public class AdminMenu {
         }
     }
 
-    public static void showEmployeeStatistics() {
-        System.out.print("Select an option to show an employee statistics: ");
+    private static void showEmployeeStatistics() {
+        System.out.print("\nSelect an option to show an employee statistics: ");
         String choice = scanner.next().trim();
         switch (choice) {
             case "1" -> {
@@ -100,10 +100,10 @@ public class AdminMenu {
         }
     }
 
-    public static void viewAdminStatisticMenu() {
+    protected static void viewAdminStatisticMenu() {
         System.out.println("""
-                What employees statistics would you like to displayed? \s
-                \t1. Search by employee first name; \s
+                \nWhat employees statistics would you like to displayed? \s
+                \t1. Search by employee name; \s
                 \t2. Search by week number; \s
                 \t3. Search by everything in Protocol file;
                 \t4. Return to main menu.""");

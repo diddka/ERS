@@ -1,7 +1,6 @@
 import java.util.Scanner;
 
 public class LoginMenu {
-
     static Scanner scanner = new Scanner(System.in);
 
     public static void seeMainMenu() {
@@ -24,4 +23,8 @@ public class LoginMenu {
     }
 
 }
+
+
+
+
 

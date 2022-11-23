@@ -7,13 +7,11 @@ public class Admin extends User {
     static List<Employee> employeeList;
     static List<Protocol> protocolList;
 
-
     public Admin(String[] parts) {
         super(parts);
-
     }
 
-    public static void addClient() {
+    protected static void addClient() {
         String clientsFile = "Clients.csv";
         try {
             WriteFile.writeNewClients(Client.input());
@@ -23,7 +21,7 @@ public class Admin extends User {
         }
     }
 
-    public static void registerNewEmployee() {
+    protected static void registerNewEmployee() {
         String employeesFile = "Employees.csv";
         try {
             WriteFile.writeNewEmployees(Employee.input());
@@ -33,7 +31,7 @@ public class Admin extends User {
         }
     }
 
-    public static void viewEmployeesList() {
+    protected static void viewEmployeesList() {
         employeeList = ReadFile.readEmployeeFile();
         if (!employeeList.isEmpty()) {
             System.out.println("Employees list: ");
@@ -45,8 +43,8 @@ public class Admin extends User {
         }
     }
 
-    public static void searchEmployeeByName() {
-        System.out.println("Enter the employee name for search: ");
+    protected static void searchEmployeeByName() {
+        System.out.println("Enter the name of the search employee: ");
         protocolList = ReadFile.readProtocolFile();
         String search = scanner.nextLine().trim();
         checkSearch(search);
@@ -54,13 +52,48 @@ public class Admin extends User {
 
     private static void checkSearch(String search) {
         if (!search.isEmpty()) {
-            printTheProtocolOfTheFindedEmployee(search);
+            Admin.printTheProtocolOfTheFindedEmployee(search);
         } else {
             System.out.println("The search cannot be empty!");
         }
     }
 
-    public static void searchProtocolByWeek() {
+    private static void printTheProtocolOfTheFindedEmployee(String search) {
+        if (checkInputIsString(search)) {
+            for (Protocol protocol : protocolList) {
+                if (search.equals(protocol.getEmployeeName())) {
+                    System.out.println(protocol);
+                } else if (checkSearchExistEmployee(search)) {
+                    System.out.println("The employee doesn't exist!");
+                    break;
+                }
+            }
+        }
+        AdminMenu.viewAdminStatisticMenu();
+    }
+
+    private static boolean checkInputIsString(String input) {
+        for (char symbol : input.toCharArray()) {
+            if (Character.isAlphabetic(symbol)) {
+                return true;
+            } else {
+                System.out.println("Invalid input!!! \nThe search cannot be integer! Please, ENTER an employee name!!!");
+                Admin.searchEmployeeByName();
+            }
+        }
+        return false;
+    }
+
+    private static boolean checkSearchExistEmployee(String search) {
+        for (Protocol protocol : Admin.protocolList) {
+            if (search.equals(protocol.getEmployeeName())) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    protected static void searchProtocolByWeek() {
         protocolList = ReadFile.readProtocolFile();
         System.out.println("Enter a number of week to search: ");
         String searchWeek = scanner.next();
@@ -78,7 +111,6 @@ public class Admin extends User {
                         System.out.println("There is NO such week number!!! Enter number between \"" + protocolFirstIndex.weekOfYear + "\" and \"" + protocolLastIndex.weekOfYear + "\"");
                         break;
                     }
-
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
                     searchProtocolByWeek();
@@ -88,7 +120,18 @@ public class Admin extends User {
         askForANewSearch();
     }
 
-    protected static void askForANewSearch() {
+    private static boolean checkMethodsInputIfDigit(String input) {
+        for (char c : input.toCharArray()) {
+            if (Character.isAlphabetic(c)) {
+                System.out.println("INVALID INPUT!!! ENTER A NUMBER!!!");
+                Admin.askForANewSearch();
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private static void askForANewSearch() {
         System.out.println("""
                 Did you want a new search by week?
                 \t1. Yes
@@ -104,54 +147,7 @@ public class Admin extends User {
         }
     }
 
-    protected static boolean checkMethodsInputIfDigit(String input) {
-        for (char c : input.toCharArray()) {
-            if (Character.isAlphabetic(c)) {
-                System.out.println("INVALID INPUT!!! ENTER A NUMBER!!!");
-                askForANewSearch();
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private static void printTheProtocolOfTheFindedEmployee(String search) {
-        if (checkInputIsDigit(search)) {
-            for (Protocol protocol : protocolList) {
-                if (search.equals(protocol.employeeName)) {
-                    System.out.println(protocol);
-                } else if (checkSearchExistEmployee(search)) {
-                    System.out.println("The employee doesn't exist!");
-                    break;
-                }
-            }
-        }
-        AdminMenu.viewAdminStatisticMenu();
-    }
-
-    private static boolean checkInputIsDigit(String input) {
-        for (char symbol : input.toCharArray()) {
-            if (Character.isAlphabetic(symbol)) {
-                return true;
-            } else {
-                System.out.println("Invalid input!!! \nThe search cannot be integer! Please, ENTER an employee name!!!");
-                Admin.searchEmployeeByName();
-            }
-        }
-        return false;
-    }
-
-
-    private static boolean checkSearchExistEmployee(String search) {
-        for (Protocol protocol : protocolList) {
-            if (search.equals(protocol.employeeName)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public static void searchByEverythingInFile() {
+    protected static void searchByEverythingInFile() {
         System.out.println("Enter that you want to search: ");
         String search = scanner.nextLine().trim();
         try {
@@ -160,6 +156,9 @@ public class Admin extends User {
             throw new RuntimeException(e.getMessage());
         }
     }
+
+
+
 
 
 }

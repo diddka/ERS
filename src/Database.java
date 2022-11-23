@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class Database {
-    public static Map<String, Employee> load() {
+    protected static Map<String, Employee> load() {
         Map<String, Employee> employeeMap = new HashMap<>();
         try {
             Scanner data = new Scanner(new File("Employees.csv"));

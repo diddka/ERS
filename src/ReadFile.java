@@ -5,7 +5,7 @@ public class ReadFile {
     static List<Client> clients;
     static List<Employee> employees;
     static List<Protocol> protocolList;
-    public static List<Client> readClientFile() {
+    protected static List<Client> readClientFile() {
         clients = new ArrayList<>();
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader("Clients.csv"))) {
             String currentLine;
@@ -23,7 +23,7 @@ public class ReadFile {
         return clients;
     }
 
-    public static List<Employee> readEmployeeFile() {
+    protected static List<Employee> readEmployeeFile() {
         employees = new ArrayList<>();
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader("Employees.csv"))) {
             String currentLine;
@@ -43,7 +43,7 @@ public class ReadFile {
         }
         return employees;
     }
-    public static List<Protocol> readProtocolFile() {
+    protected static List<Protocol> readProtocolFile() {
         protocolList = new ArrayList<>();
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader("Protocol.csv"))) {
             String currentLine;

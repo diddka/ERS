@@ -6,7 +6,6 @@ public class Employee extends User {
     static Scanner scanner = new Scanner(System.in);
     static List<Client> clientList;
 
-
     public Employee(String[] parts) {
         super(parts);
     }
@@ -23,12 +22,13 @@ public class Employee extends User {
         System.out.print("Enter an Employee username: ");
         String username = Validation.checkIsValidInput();
         System.out.print("Enter an Employee password: ");
-        String password = String.valueOf(getPassword());
+        String password = String.valueOf(createUniquePassword());
+        System.out.print("Enter an Employee validation status (is admin or employee): ");
         String validateEmployee = Validation.checkIsValidInput();
         return new Employee(new String[]{firstName, lastName, email, city, username, password, validateEmployee});
     }
 
-    public static char[] getPassword() {
+    private static char[] createUniquePassword() {
         String upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         String lower = "abcdefghijklmnopqrstuvwxyz";
         String special = "!@#$";
@@ -51,7 +51,7 @@ public class Employee extends User {
     }
 
 
-    public static void createClientProtocol(String username) {
+    protected static void createClientProtocol(String username) {
         Map<String, Employee> employeeMap = Database.load();
         Employee employee = employeeMap.get(username);
         String week = generateCurrentDateAndWeekForProtocol().get(0);
@@ -79,8 +79,8 @@ public class Employee extends User {
             while (isValidInput) {
                 if (scanner.hasNextInt()) {
                     hours = scanner.nextInt();
-                    if (hours <= 0) {
-                        System.out.println("Invalid input.\n" + "The value of hours must be bigger than zero. Try again.");
+                    if (hours <= 0 || hours > 8) {
+                        System.out.println("Invalid input.\n" + "The value of hours must be bigger than zero and less than eight hours. Try again.");
                         continue;
                     }
                 } else {
@@ -143,13 +143,11 @@ public class Employee extends User {
 
     @Override
     public String toString() {
-        return "Employee{" +
-                "firstName = '" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                ", country='" + city + '\'' +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                "} ";
+        return "Name: " + super.firstName + " " + super.lastName +
+                ", Email: " + super.email +
+                ", Country: " + super.city +
+                ", Username: " + super.username +
+                ", Password: " + super.password +
+                ", Validation status: " + super.validateUser;
     }
 }

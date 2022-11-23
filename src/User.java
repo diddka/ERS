@@ -22,8 +22,7 @@ public abstract class User {
         validateUser = parts[6];
     }
 
-
-    public static void viewClientsList() {
+    protected static void viewClientsList() {
         clients = ReadFile.readClientFile();
         if (!clients.isEmpty()) {
             System.out.println("Clients list: ");
