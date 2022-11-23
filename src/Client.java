@@ -18,12 +18,34 @@ public class Client {
         this.contractExpirationDate = contractExpirationDate;
     }
 
+    public String getClientName() {
+        return clientName;
+    }
+
+    public String getProjectName() {
+        return projectName;
+    }
+
+    public String getContractExpirationDate() {
+        return contractExpirationDate;
+    }
+
+    protected static Client input() {
+        System.out.print("Enter a Client name: ");
+        String name = Validation.checkIsValidInput();
+        System.out.print("Enter a Project name: ");
+        String projectName = Validation.checkIsValidInput();
+        System.out.print("Enter the contract expiration date: ");
+        String contractExpirationDate = setContractExpirationDate();
+        return new Client(name, projectName, contractExpirationDate);
+    }
+
     private static String setContractExpirationDate() {
         LocalDate now = LocalDate.now();
         String currentDate = now.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
         SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
         String contractExpirationDate = null;
-        Date today = getTodayDate(currentDate, formatter);
+        Date today = takeTodayDate(currentDate, formatter);
         Date expirationDate;
         boolean isBefore = true;
         try {
@@ -55,7 +77,7 @@ public class Client {
         return false;
     }
 
-    private static Date getTodayDate(String currentDate, SimpleDateFormat formatter) {
+    private static Date takeTodayDate(String currentDate, SimpleDateFormat formatter) {
         Date today;
         try {
             today = formatter.parse(currentDate);
@@ -64,43 +86,6 @@ public class Client {
         }
         return today;
     }
-
-    public String getClientName() {
-        return clientName;
-    }
-
-    public String getProjectName() {
-        return projectName;
-    }
-
-    public String getContractExpirationDate() {
-        return contractExpirationDate;
-    }
-
-    protected static Client input() {
-        System.out.print("Enter a Client name: ");
-        String name = Validation.checkIsValidInput();
-        System.out.print("Enter a Project name: ");
-        String projectName = Validation.checkIsValidInput();
-        System.out.print("Enter the contract expiration date: ");
-        String contractExpirationDate = setContractExpirationDate();
-        return new Client(name, projectName, contractExpirationDate);
-    }
-
-//    private static String setClientName() {
-//        String name = null;
-//        boolean isValidName = true;
-//        while (isValidName) {
-//            name = scanner.nextLine().trim();
-//            if (name.trim().isEmpty()) {
-//                System.out.println("Client name cannot be empty! Try again!");
-//                continue;
-//            }
-//            isValidName = false;
-//        }
-//        return name;
-//    }
-
 
     @Override
     public String toString() {

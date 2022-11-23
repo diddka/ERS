@@ -17,7 +17,7 @@ public class EmployeeMenu {
         System.out.println("Enter password: ");
         password = keyboard.nextLine().trim();
         Employee employee = employeeMap.get(username);
-        if ((employee.password).equals(password) && employee.validateUser.equals("employee")) {
+        if ((employee.password).equals(password) && employee.validateUser.equalsIgnoreCase("employee")) {
             System.out.println("Successfully logged in.");
             System.out.println("Welcome, " + employee.validateUser + ": " + employee.firstName + " " + employee.lastName);
             viewEmployeeMenu(username);
@@ -27,19 +27,19 @@ public class EmployeeMenu {
     }
 
 
-    public static void viewEmployeeMenu(String name) {
+    private static void viewEmployeeMenu(String username) {
         System.out.println("""
-                What do you want to do?\s
+                \nWhat do you want to do?\s
                 \t1. Create a Protocol;\s
                 \t2. View Clients List;\s
                 \t3. Return to main menu;\s
                 \t4. Exit.""");
-        enterEmployeeChoice(name);
+        enterEmployeeChoice(username);
     }
 
 
-    public static void enterEmployeeChoice(String username) {
-        System.out.print("Choose an option from 1 to 4: ");
+    private static void enterEmployeeChoice(String username) {
+        System.out.print("\nChoose an option from 1 to 4: ");
         String choice = scanner.next().trim();
         switch (choice) {
             case "1" -> {
@@ -64,8 +64,5 @@ public class EmployeeMenu {
             }
         }
     }
-
-
-
 
 }

@@ -3,7 +3,7 @@ import java.util.Scanner;
 public class Validation {
     static Scanner scanner = new Scanner(System.in);
 
-    public static String checkIsValidInput() {
+    protected static String checkIsValidInput() {
         String input = null;
         boolean isValidInput = true;
         while (isValidInput) {
@@ -20,7 +20,7 @@ public class Validation {
         return input;
     }
 
-    static boolean checkInputIsNumber(String input) {
+    private static boolean checkInputIsNumber(String input) {
         for (int i = 0; i < input.length(); i++) {
             if (Character.isDigit(input.charAt(i))) {
                 System.out.println("Input cannot be an integer! Try again!");
@@ -29,4 +29,6 @@ public class Validation {
         }
         return false;
     }
+
+
 }
