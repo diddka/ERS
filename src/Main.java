@@ -4,7 +4,9 @@ public class Main {
         System.out.print("This is a Company time tracking system...\n");
         LoginMenu.seeMainMenu();
 
-
+//        PasswordHelper.createUniquePassword();
+//        System.out.println("----------------------");
+//        System.out.println(PasswordHelper.generateRandomPassword());
 
     }
 

@@ -30,5 +30,20 @@ public class Validation {
         return false;
     }
 
+    protected static String checkUserStatus() {
+        String status = null;
+        boolean validStatus = true;
+        while (validStatus) {
+            status = scanner.nextLine().trim();
+            if (!(status.equalsIgnoreCase("admin") || status.equalsIgnoreCase("employee"))) {
+                System.out.println("Please, enter a valid status:");
+                continue;
+            }
+            validStatus = false;
+        }
+
+        return status;
+    }
+
 
 }

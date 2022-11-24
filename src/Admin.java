@@ -15,7 +15,7 @@ public class Admin extends User {
         String clientsFile = "Clients.csv";
         try {
             WriteFile.writeNewClients(Client.input());
-            System.out.println("The client is added!");
+            System.out.println("\nThe client is added!");
         } catch (Exception e) {
             System.out.println("Can't write to file " + clientsFile + " " + e.getMessage());
         }
@@ -25,7 +25,7 @@ public class Admin extends User {
         String employeesFile = "Employees.csv";
         try {
             WriteFile.writeNewEmployees(Employee.input());
-            System.out.println("The employee is added!");
+            System.out.println("\nThe employee is added!");
         } catch (Exception e) {
             System.out.println("Can't write to file " + employeesFile + " " + e.getMessage());
         }
