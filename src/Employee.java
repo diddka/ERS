@@ -126,7 +126,7 @@ public class Employee extends User {
                 ", Email: " + super.email +
                 ", Country: " + super.city +
                 ", Username: " + super.username +
-                ", Password: " + super.password +
+                ", Password: " + "******" +
                 ", Validation status: " + super.validateUser;
     }
 }

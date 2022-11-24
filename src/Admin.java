@@ -6,6 +6,7 @@ public class Admin extends User {
     static Scanner scanner = new Scanner(System.in);
     static List<Employee> employeeList;
     static List<Protocol> protocolList;
+    static List<Client> clientList;
 
     public Admin(String[] parts) {
         super(parts);
@@ -13,22 +14,53 @@ public class Admin extends User {
 
     protected static void addClient() {
         String clientsFile = "Clients.csv";
+        Client newClient = Client.input();
         try {
-            WriteFile.writeNewClients(Client.input());
-            System.out.println("\nThe client is added!");
+            if (checkClientList(newClient)) {
+                WriteFile.writeNewClients(newClient);
+                System.out.println("\nThe client " + newClient.clientName + " with a project: " + newClient.projectName + " is added!");
+            } else {
+                System.out.println("\nThis client already exist in company Clients list!!!");
+            }
+
         } catch (Exception e) {
             System.out.println("Can't write to file " + clientsFile + " " + e.getMessage());
         }
     }
 
+    private static Boolean checkClientList(Client addNewClients) {
+        clientList = ReadFile.readClientFile();
+        for (Client client : clientList) {
+            if (addNewClients.clientName.equals(client.clientName) && addNewClients.projectName.equals(client.projectName)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     protected static void registerNewEmployee() {
         String employeesFile = "Employees.csv";
+        Employee registerNewEmployee = Employee.input();
         try {
-            WriteFile.writeNewEmployees(Employee.input());
-            System.out.println("\nThe employee is added!");
+            if (checkEmployeeList(registerNewEmployee)) {
+                WriteFile.writeNewEmployees(registerNewEmployee);
+                System.out.println("\nThe employee " + registerNewEmployee.firstName + " " + registerNewEmployee.lastName + " is added!");
+            } else {
+                System.out.println("\nThis employee already exist in company Employees list!!!");
+            }
         } catch (Exception e) {
             System.out.println("Can't write to file " + employeesFile + " " + e.getMessage());
         }
+    }
+
+    private static Boolean checkEmployeeList(Employee registerNewEmployee) {
+        employeeList = ReadFile.readEmployeeFile();
+        for (Employee employee : employeeList) {
+            if (registerNewEmployee.firstName.equals(employee.firstName) && registerNewEmployee.lastName.equals(employee.lastName) && registerNewEmployee.username.equals(employee.username)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     protected static void viewEmployeesList() {
@@ -156,9 +188,6 @@ public class Admin extends User {
             throw new RuntimeException(e.getMessage());
         }
     }
-
-
-
 
 
 }
