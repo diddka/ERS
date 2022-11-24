@@ -1,3 +1,4 @@
+import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -11,6 +12,8 @@ public class Employee extends User {
     }
 
     protected static Employee input() {
+        System.out.print("Enter a validation status (admin or employee): ");
+        String validateEmployee = Validation.checkUserStatus();
         System.out.print("Enter an Employee first name: ");
         String firstName = Validation.checkIsValidInput();
         System.out.print("Enter an Employee last name: ");
@@ -21,35 +24,11 @@ public class Employee extends User {
         String city = Validation.checkIsValidInput();
         System.out.print("Enter an Employee username: ");
         String username = Validation.checkIsValidInput();
-        System.out.print("Enter an Employee password: ");
-        String password = String.valueOf(createUniquePassword());
-        System.out.print("Enter an Employee validation status (is admin or employee): ");
-        String validateEmployee = Validation.checkIsValidInput();
+        //System.out.print(firstName + " " + lastName + ", which is an /" + validateEmployee + "/ has the following unique password: ");
+        String password = PasswordHelper.generateRandomPassword();//String.valueOf(PasswordHelper.createUniquePassword());
+        System.out.print(firstName + " " + lastName + ", which is an /" + validateEmployee + "/ has the following unique password: " + password);
         return new Employee(new String[]{firstName, lastName, email, city, username, password, validateEmployee});
     }
-
-    private static char[] createUniquePassword() {
-        String upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        String lower = "abcdefghijklmnopqrstuvwxyz";
-        String special = "!@#$";
-        String numbers = "0123456789";
-        String all = upper + lower + special + numbers;
-        Random random = new Random();
-        int length = 8;
-        char[] password = new char[length];
-
-        password[0] = lower.charAt(random.nextInt(lower.length()));
-        password[1] = upper.charAt(random.nextInt(upper.length()));
-        password[2] = special.charAt(random.nextInt(special.length()));
-        password[3] = numbers.charAt(random.nextInt(numbers.length()));
-
-        for (int i = 0; i < length; i++) {
-            password[i] = all.charAt(random.nextInt(all.length()));
-        }
-        System.out.println(password);
-        return password;
-    }
-
 
     protected static void createClientProtocol(String username) {
         Map<String, Employee> employeeMap = Database.load();
