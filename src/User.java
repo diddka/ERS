@@ -11,7 +11,6 @@ public abstract class User {
     protected String validateUser;
     static List<Client> clients;
 
-
     public User(String[] parts) {
         firstName = parts[0];
         lastName = parts[1];
@@ -22,7 +21,7 @@ public abstract class User {
         validateUser = parts[6];
     }
 
-    protected static void viewClientsList() {
+        protected static void viewClientsList() {
         clients = ReadFile.readClientFile();
         if (!clients.isEmpty()) {
             System.out.println("Clients list: ");

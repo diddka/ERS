@@ -8,10 +8,10 @@ public class Validation {
         boolean isValidInput = true;
         while (isValidInput) {
             input = scanner.nextLine().trim();
-            if (checkInputIsNumber(input)){
+            if (checkInputIsNumber(input)) {
                 continue;
             }
-            if (input.trim().isEmpty()) {
+            if (input.trim().isEmpty() || input.equals("")) {
                 System.out.println("Input cannot be empty! Try again!");
                 continue;
             }
@@ -41,9 +41,20 @@ public class Validation {
             }
             validStatus = false;
         }
-
         return status;
     }
 
-
+    protected static String checkInputIsEmpty() {
+        String input = null;
+        boolean isValidInput = true;
+        while (isValidInput) {
+            input = scanner.nextLine().trim();
+            if (input.trim().isEmpty() || input.equals("")) {
+                System.out.println("Input cannot be empty! Try again!");
+                continue;
+            }
+            isValidInput = false;
+        }
+        return input;
+    }
 }
