@@ -1,11 +1,12 @@
-import java.security.SecureRandom;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class Employee extends User {
     static Scanner scanner = new Scanner(System.in);
-    static List<Client> clientList;
 
     public Employee(String[] parts) {
         super(parts);
@@ -19,14 +20,14 @@ public class Employee extends User {
         System.out.print("Enter an Employee last name: ");
         String lastName = Validation.checkIsValidInput();
         System.out.print("Enter an Employee email: ");
-        String email = Validation.checkIsValidInput();
+        String email = Validation.checkInputIsEmpty();
         System.out.print("Enter an Employee city: ");
         String city = Validation.checkIsValidInput();
         System.out.print("Enter an Employee username: ");
         String username = Validation.checkIsValidInput();
         //System.out.print(firstName + " " + lastName + ", which is an /" + validateEmployee + "/ has the following unique password: ");
         String password = PasswordHelper.generateRandomPassword();//String.valueOf(PasswordHelper.createUniquePassword());
-        System.out.print(firstName + " " + lastName + ", which is an /" + validateEmployee + "/ has the following unique password: " + password);
+        System.out.print(firstName + " " + lastName + ", which is an / " + validateEmployee + " / has the following unique password: " + password);
         return new Employee(new String[]{firstName, lastName, email, city, username, password, validateEmployee});
     }
 
@@ -36,7 +37,7 @@ public class Employee extends User {
         String week = generateCurrentDateAndWeekForProtocol().get(0);
         String date = generateCurrentDateAndWeekForProtocol().get(1);
         String hours = inputHoursOfWork();
-        String selectedClient = selectClientFromList(username);
+        String selectedClient = selectActualClientFromList(username);
         String protocolFile = "Protocol.csv";
         try {
             WriteFile.writeEmployeeProtocol(new Protocol(week, date, selectedClient, hours), employee.firstName, employee.lastName);
@@ -46,7 +47,7 @@ public class Employee extends User {
     }
 
     private static String inputHoursOfWork() {
-        System.out.print("Enter how many hours you have work for this client? : ");
+        System.out.print("\nEnter how many hours you have work for this client? : ");
         int hours = checkHoursOfWork();
         return String.valueOf(hours);
     }
@@ -85,31 +86,66 @@ public class Employee extends User {
         return weekAndDate;
     }
 
-    private static String selectClientFromList(String username) {
-        clientList = ReadFile.readClientFile();
-        User.viewClientsList();
-        System.out.println(username + ", let's select a client, to do this enter a number of client: ");
-        int number = checkNumberOfClient();
-        String employeeChoice = clientList.get(number - 1).toString();
-        System.out.println(employeeChoice);
-        System.out.println(username + ", your protocol is created!!!");
-        return employeeChoice;
+    public static String selectActualClientFromList(String username) {
+        clients = ReadFile.readClientFile();
+        List<Client> actualClientsList = new ArrayList<>();
+        checkDateIsBeforeContractExpirationDate(actualClientsList);
+        viewActualClientsList(actualClientsList);
+        System.out.print("\n" + username + ", let's select a client, to do this enter a number of client: ");
+        int number = checkNumberOfClient(actualClientsList);
+        String choice = actualClientsList.get(number - 1).toString();
+        System.out.println(choice);
+        System.out.println("\n" + username + ", your protocol is created!!!");
+        return choice;
     }
 
-    private static int checkNumberOfClient() {
+    private static void checkDateIsBeforeContractExpirationDate(List<Client> actualClientsList) {
+        LocalDate now = LocalDate.now();
+        String currentDate = now.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+        SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
+        Date today = Client.takeTodayDate(currentDate, formatter);
+        Date expirationDate;
+        boolean isBefore;
+        boolean isEquals;
+        for (Client client : clients) {
+            try {
+                expirationDate = formatter.parse(client.getContractExpirationDate());
+            } catch (ParseException e) {
+                e.printStackTrace();
+                System.out.println("\nReally bad! The exception message is: " + e.getMessage());
+                throw new RuntimeException(e);
+            }
+            isEquals = today.equals(expirationDate);
+            isBefore = today.before(expirationDate);
+            if (isEquals || isBefore) {
+                actualClientsList.add(client);
+            }
+        }
+    }
+
+    private static void viewActualClientsList(List<Client> actualClientsList) {
+        int numeric = 1;
+        System.out.println("The actual Clients list is: ");
+        for (Client actualClient : actualClientsList) {
+            System.out.println(numeric + ". " + actualClient);
+            numeric++;
+        }
+    }
+
+    private static int checkNumberOfClient(List<Client> actualClientsList) {
         boolean isValidInput = true;
         int number = 0;
         try {
             while (isValidInput) {
                 if (scanner.hasNextInt()) {
                     number = scanner.nextInt();
-                    if (number > clientList.size() || number <= 0) {
-                        System.out.println("Invalid value.\n" + "The list contains " + clientList.size() + " client. Please, try again.");
+                    if (number > actualClientsList.size() || number <= 0) {
+                        System.out.println("Invalid value.\n" + "The list contains " + actualClientsList.size() + " clients. Please, try again.");
                         continue;
                     }
                 } else {
                     scanner.next();
-                    System.out.println("Incorrect input.\n" + "The list contains " + clientList.size() + " client. Please, try again.");
+                    System.out.println("Incorrect input.\n" + "The list contains " + actualClientsList.size() + " clients. Please, try again.");
                     continue;
                 }
                 isValidInput = false;

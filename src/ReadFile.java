@@ -1,10 +1,13 @@
 import java.io.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class ReadFile {
     static List<Client> clients;
     static List<Employee> employees;
     static List<Protocol> protocolList;
+
     protected static List<Client> readClientFile() {
         clients = new ArrayList<>();
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader("Clients.csv"))) {
@@ -16,7 +19,20 @@ public class ReadFile {
                 String expirationDate = detailed[2];
                 clients.add(new Client(name, project, expirationDate));
             }
-            clients.sort(Comparator.comparing(Client::getContractExpirationDate).thenComparing(Client::getClientName).thenComparing(Client::getProjectName));
+//            clients.sort(Comparator.comparing(Client::getContractExpirationDate).thenComparing(Client::getClientName).thenComparing(Client::getProjectName));
+            clients.sort((client1, client2) -> {
+                String pattern = "dd.MM.yyyy";
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+                try {
+                    Date date1 = simpleDateFormat.parse(client1.getContractExpirationDate());
+                    Date date2 = simpleDateFormat.parse(client2.getContractExpirationDate());
+                    return date1.compareTo(date2);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                return 0;
+            });
+
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
@@ -43,6 +59,7 @@ public class ReadFile {
         }
         return employees;
     }
+
     protected static List<Protocol> readProtocolFile() {
         protocolList = new ArrayList<>();
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader("Protocol.csv"))) {

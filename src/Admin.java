@@ -18,7 +18,7 @@ public class Admin extends User {
         try {
             if (checkClientList(newClient)) {
                 WriteFile.writeNewClients(newClient);
-                System.out.println("\nThe client " + newClient.clientName + " with a project: " + newClient.projectName + " is added!");
+                System.out.println("The client " + newClient.clientName + " with a project: " + newClient.projectName + " is added!");
             } else {
                 System.out.println("\nThis client already exist in company Clients list!!!");
             }
@@ -28,10 +28,10 @@ public class Admin extends User {
         }
     }
 
-    private static Boolean checkClientList(Client addNewClients) {
+    private static Boolean checkClientList(Client newClient) {
         clientList = ReadFile.readClientFile();
         for (Client client : clientList) {
-            if (addNewClients.clientName.equals(client.clientName) && addNewClients.projectName.equals(client.projectName)) {
+            if (newClient.clientName.equals(client.clientName) && newClient.projectName.equals(client.projectName)) {
                 return false;
             }
         }
@@ -153,9 +153,9 @@ public class Admin extends User {
     }
 
     private static boolean checkMethodsInputIfDigit(String input) {
-        for (char c : input.toCharArray()) {
-            if (Character.isAlphabetic(c)) {
-                System.out.println("INVALID INPUT!!! ENTER A NUMBER!!!");
+        for (char symbol : input.toCharArray()) {
+            if (Character.isAlphabetic(symbol)) {
+                System.out.println("Invalid input! Please, enter a number!");
                 Admin.askForANewSearch();
                 return false;
             }

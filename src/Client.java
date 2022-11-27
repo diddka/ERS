@@ -6,7 +6,6 @@ import java.util.Date;
 import java.util.Scanner;
 
 public class Client {
-
     static Scanner scanner = new Scanner(System.in);
     protected String clientName;
     protected String projectName;
@@ -30,7 +29,7 @@ public class Client {
         return contractExpirationDate;
     }
 
-    protected static Client input() {
+    public static Client input() {
         System.out.print("Enter a Client name: ");
         String name = Validation.checkIsValidInput();
         System.out.print("Enter a Project name: ");
@@ -40,7 +39,7 @@ public class Client {
         return new Client(name, projectName, contractExpirationDate);
     }
 
-    private static String setContractExpirationDate() {
+    protected static String setContractExpirationDate() {
         LocalDate now = LocalDate.now();
         String currentDate = now.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
         SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
@@ -48,16 +47,23 @@ public class Client {
         Date today = takeTodayDate(currentDate, formatter);
         Date expirationDate;
         boolean isBefore = true;
-        try {
-            while (isBefore) {
-                contractExpirationDate = scanner.nextLine().trim();
-                expirationDate = formatter.parse(contractExpirationDate);
-                if (checkDate(currentDate, contractExpirationDate, today, expirationDate)) continue;
+        while (isBefore) {
+            contractExpirationDate = scanner.nextLine().trim();
+            if (contractExpirationDate.isEmpty() || contractExpirationDate.trim().equals("")) {
+                System.out.println("The date cannot be empty! Try again");
+            } else {
+                try {
+                    expirationDate = formatter.parse(contractExpirationDate);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                    System.out.println("Please, enter a correct date! \n" + e.getMessage());
+                    continue;
+                }
+                if (checkDate(currentDate, contractExpirationDate, today, expirationDate)) {
+                    continue;
+                }
                 isBefore = false;
             }
-        } catch (ParseException e) {
-            System.out.println(e.getMessage());
-            // throw new RuntimeException(e);
         }
         return contractExpirationDate;
     }
@@ -77,12 +83,14 @@ public class Client {
         return false;
     }
 
-    private static Date takeTodayDate(String currentDate, SimpleDateFormat formatter) {
+    protected static Date takeTodayDate(String currentDate, SimpleDateFormat formatter) {
         Date today;
         try {
             today = formatter.parse(currentDate);
         } catch (ParseException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
+            System.out.println("\nHas a today date parsing problem: " + e.getMessage());
+            throw new RuntimeException(e.getMessage());
         }
         return today;
     }
@@ -94,4 +102,6 @@ public class Client {
                 " and contract expiration date: " +
                 contractExpirationDate;
     }
+
+
 }
