@@ -1,4 +1,5 @@
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -91,16 +92,19 @@ public class Admin extends User {
     }
 
     private static void printTheProtocolOfTheFindedEmployee(String search) {
+        List<Protocol> sumList = new ArrayList<>();
         if (checkInputIsString(search)) {
             for (Protocol protocol : protocolList) {
                 if (search.equals(protocol.getEmployeeName())) {
-                    System.out.println(protocol);
+                    sumList.add(protocol);
                 } else if (checkSearchExistEmployee(search)) {
                     System.out.println("The employee doesn't exist!");
                     break;
                 }
             }
         }
+        System.out.print("> > > > > For employee: " + search + " < < < < <\n");
+        calculateTime(sumList);
         AdminMenu.viewAdminStatisticMenu();
     }
 
@@ -126,28 +130,35 @@ public class Admin extends User {
     }
 
     protected static void searchProtocolByWeek() {
-        protocolList = ReadFile.readProtocolFile();
-        System.out.println("Enter a number of week to search: ");
-        String searchWeek = scanner.next();
-        Protocol protocolLastIndex = protocolList.get(protocolList.size() - 1);
-        Protocol protocolFirstIndex = protocolList.get(1);
-        int lastWeek = Integer.parseInt(protocolLastIndex.weekOfYear);
-        int firsWeek = Integer.parseInt(protocolFirstIndex.weekOfYear);
-        int findWeek = Integer.parseInt(searchWeek);
-        if (checkMethodsInputIfDigit(searchWeek)) {
-            for (Protocol protocol : protocolList) {
-                try {
-                    if (searchWeek.equals(protocol.weekOfYear)) {
-                        System.out.println(protocol);
-                    } else if (findWeek > lastWeek || findWeek <= 0 || findWeek < firsWeek) {
-                        System.out.println("There is NO such week number!!! Enter number between \"" + protocolFirstIndex.weekOfYear + "\" and \"" + protocolLastIndex.weekOfYear + "\"");
-                        break;
+        List<Protocol> sumProtocolHours = new ArrayList<>();
+        try {
+            protocolList = ReadFile.readProtocolFile();
+            System.out.println("Enter a number of week to search: ");
+            String searchWeek = scanner.next();
+            Protocol protocolLastIndex = protocolList.get(protocolList.size() - 1);
+            Protocol protocolFirstIndex = protocolList.get(0);
+            int lastWeek = Integer.parseInt(protocolLastIndex.weekOfYear);
+            int firsWeek = Integer.parseInt(protocolFirstIndex.weekOfYear);
+            int findWeek = Integer.parseInt(searchWeek);
+            if (checkMethodsInputIfDigit(searchWeek)) {
+                for (Protocol protocol : protocolList) {
+                    try {
+                        if (searchWeek.equals(protocol.weekOfYear)) {
+                            sumProtocolHours.add(protocol);
+                        } else if (findWeek > lastWeek || findWeek <= 0 || findWeek < firsWeek) {
+                            System.out.println("There is NO such week number!!! Enter number between \"" + protocolFirstIndex.weekOfYear + "\" and \"" + protocolLastIndex.weekOfYear + "\"");
+                            break;
+                        }
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
+                        searchProtocolByWeek();
                     }
-                } catch (Exception e) {
-                    System.out.println(e.getMessage());
-                    searchProtocolByWeek();
                 }
             }
+            System.out.print("> > > > > For week: " + searchWeek + " < < < < <\n");
+            calculateTime(sumProtocolHours);
+        }catch (IndexOutOfBoundsException e){
+            System.out.println(e.getMessage());
         }
         askForANewSearch();
     }
@@ -156,7 +167,7 @@ public class Admin extends User {
         for (char symbol : input.toCharArray()) {
             if (Character.isAlphabetic(symbol)) {
                 System.out.println("Invalid input! Please, enter a number!");
-                Admin.askForANewSearch();
+                askForANewSearch();
                 return false;
             }
         }
@@ -177,6 +188,14 @@ public class Admin extends User {
             }
             askForANewSearch();
         }
+    }
+    private static void calculateTime(List<Protocol> calc){
+        int sum = 0;
+        for (Protocol protocol : calc) {
+            System.out.println(protocol);
+            sum += Integer.parseInt(protocol.hoursOfWorkForThisClient);
+        }
+        System.out.println(">>>>>>> Total time of work: " + sum + " hours <<<<<<<");
     }
 
     protected static void searchByEverythingInFile() {
