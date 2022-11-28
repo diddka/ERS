@@ -29,7 +29,7 @@ public class Admin extends User {
         }
     }
 
-    private static Boolean checkClientList(Client newClient) {
+    private static boolean checkClientList(Client newClient) {
         clientList = ReadFile.readClientFile();
         for (Client client : clientList) {
             if (newClient.clientName.equals(client.clientName) && newClient.projectName.equals(client.projectName)) {
@@ -47,17 +47,21 @@ public class Admin extends User {
                 WriteFile.writeNewEmployees(registerNewEmployee);
                 System.out.println("\nThe employee " + registerNewEmployee.firstName + " " + registerNewEmployee.lastName + " is added!");
             } else {
-                System.out.println("\nThis employee already exist in company Employees list!!!");
+                System.out.println("\nThe employee cannot be added!!!");
             }
         } catch (Exception e) {
             System.out.println("Can't write to file " + employeesFile + " " + e.getMessage());
         }
     }
 
-    private static Boolean checkEmployeeList(Employee registerNewEmployee) {
+    private static boolean checkEmployeeList(Employee registerNewEmployee) {
         employeeList = ReadFile.readEmployeeFile();
         for (Employee employee : employeeList) {
             if (registerNewEmployee.firstName.equals(employee.firstName) && registerNewEmployee.lastName.equals(employee.lastName) && registerNewEmployee.username.equals(employee.username)) {
+                System.out.println("\nThis employee already exist in the Company Employees list!!!");
+                return false;
+            } else if (registerNewEmployee.username.equals(employee.username)) {
+                System.out.println("\nThat username exist. Please, change it!");
                 return false;
             }
         }
@@ -167,7 +171,7 @@ public class Admin extends User {
         for (char symbol : input.toCharArray()) {
             if (Character.isAlphabetic(symbol)) {
                 System.out.println("Invalid input! Please, enter a number!");
-                askForANewSearch();
+                Admin.askForANewSearch();
                 return false;
             }
         }

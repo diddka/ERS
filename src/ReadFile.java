@@ -20,24 +20,32 @@ public class ReadFile {
                 clients.add(new Client(name, project, expirationDate));
             }
 //            clients.sort(Comparator.comparing(Client::getContractExpirationDate).thenComparing(Client::getClientName).thenComparing(Client::getProjectName));
-            clients.sort((client1, client2) -> {
-                String pattern = "dd.MM.yyyy";
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
-                try {
-                    Date date1 = simpleDateFormat.parse(client1.getContractExpirationDate());
-                    Date date2 = simpleDateFormat.parse(client2.getContractExpirationDate());
-                    return date1.compareTo(date2);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                return 0;
-            });
+            sortClientsListByExpirationDate();
 
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
+        } catch (FileNotFoundException e){
+            System.out.println(e.getMessage());
+        } catch (IOException | ArrayIndexOutOfBoundsException ioe) {
+            //ioe.printStackTrace();
+            System.out.println(ioe.getMessage());
         }
         return clients;
     }
+
+    private static void sortClientsListByExpirationDate() {
+        clients.sort((client1, client2) -> {
+            String pattern = "dd.MM.yyyy";
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+            try {
+                Date date1 = simpleDateFormat.parse(client1.getContractExpirationDate());
+                Date date2 = simpleDateFormat.parse(client2.getContractExpirationDate());
+                return date1.compareTo(date2);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            return 0;
+        });
+    }
+
 
     protected static List<Employee> readEmployeeFile() {
         employees = new ArrayList<>();
@@ -54,6 +62,8 @@ public class ReadFile {
                 String validateEmployee = detailed[6];
                 employees.add(new Employee(new String[]{first_name, last_name, email, country, username, password, validateEmployee}));
             }
+        } catch (FileNotFoundException e) {
+            System.out.println(e.getMessage());
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
@@ -73,8 +83,11 @@ public class ReadFile {
                 String hourOfWork = detailed[7];
                 protocolList.add(new Protocol(employeeName, week, dateAndTime, client, hourOfWork));
             }
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
+        } catch (FileNotFoundException e) {
+            System.out.println(e.getMessage());
+        } catch (IOException | IndexOutOfBoundsException ioe) {
+            System.out.println(ioe.getMessage());
+            // ioe.printStackTrace();
         }
         return protocolList;
     }

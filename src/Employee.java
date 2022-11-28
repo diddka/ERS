@@ -7,7 +7,6 @@ import java.util.*;
 
 public class Employee extends User {
     static Scanner scanner = new Scanner(System.in);
-
     public Employee(String[] parts) {
         super(parts);
     }
@@ -25,9 +24,10 @@ public class Employee extends User {
         String city = Validation.checkIsValidInput();
         System.out.print("Enter an Employee username: ");
         String username = Validation.checkIsValidInput();
-        //System.out.print(firstName + " " + lastName + ", which is an /" + validateEmployee + "/ has the following unique password: ");
-        String password = PasswordHelper.generateRandomPassword();//String.valueOf(PasswordHelper.createUniquePassword());
-        System.out.print(firstName + " " + lastName + ", which is an / " + validateEmployee + " / has the following unique password: " + password);
+        String password = null;
+        //System.out.print(firstName + " " + lastName + ", which is an: " + validateEmployee + " has the following unique password: ");
+        password = PasswordHelper.generateRandomPassword();//String.valueOf(PasswordHelper.createUniquePassword());
+        System.out.print(firstName + " " + lastName + ", which is an: " + validateEmployee + " has the following unique password: " + password);
         return new Employee(new String[]{firstName, lastName, email, city, username, password, validateEmployee});
     }
 
@@ -162,7 +162,7 @@ public class Employee extends User {
                 ", Email: " + super.email +
                 ", Country: " + super.city +
                 ", Username: " + super.username +
-                ", Password: " + "******" +
-                ", Validation status: " + super.validateUser;
+                ", Password: " + "******";
+               // ", Validation status: " + super.validateUser;
     }
 }
