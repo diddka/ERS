@@ -8,13 +8,13 @@ public class EmployeeMenu {
         Map<String, Employee> employeeMap = Database.load();
         Scanner keyboard = new Scanner(System.in);
         String username, password;
-        System.out.println("Enter username: ");
+        System.out.println("\nEnter your username: ");
         username = keyboard.nextLine().trim();
         if (!employeeMap.containsKey(username)) {
             System.out.println("That username does not exist! Try again.");
             loginAsEmployee();
         }
-        System.out.println("Enter password: ");
+        System.out.println("Enter your password: ");
         password = keyboard.nextLine().trim();
         Employee employee = employeeMap.get(username);
         if ((employee.password).equals(password) && employee.validateUser.equalsIgnoreCase("employee")) {
@@ -32,32 +32,26 @@ public class EmployeeMenu {
                 \nWhat do you want to do?\s
                 \t1. Create a Protocol;\s
                 \t2. View Clients List;\s
-                \t3. Return to main menu;\s
+                \t3. Return to login menu;\s
                 \t4. Exit.""");
         enterEmployeeChoice(username);
     }
 
 
     private static void enterEmployeeChoice(String username) {
-        System.out.print("\nChoose an option from 1 to 4: ");
+        System.out.print("Choose an option from 1 to 4: ");
         String choice = scanner.next().trim();
         switch (choice) {
             case "1" -> {
                 Employee.createClientProtocol(username);
-                enterEmployeeChoice(username);
+                viewEmployeeMenu(username);
             }
             case "2" -> {
                 User.viewClientsList();
-                enterEmployeeChoice(username);
+                viewEmployeeMenu(username);
             }
-            case "3" -> {
-                LoginMenu.seeMainMenu();
-                enterEmployeeChoice(username);
-            }
-            case "4" -> {
-                System.out.println("Logging out... See you next time!");
-                System.exit(0);
-            }
+            case "3" -> LoginMenu.seeLoginMenu();
+            case "4" -> LoginMenu.loggingOut();
             default -> {
                 System.out.println("Invalid choice. Try again!");
                 enterEmployeeChoice(username);

@@ -8,21 +8,20 @@ public class AdminMenu {
         Map<String, Employee> employeeMap = Database.load();
         Scanner keyboard = new Scanner(System.in);
         String username, password;
-        System.out.println("Enter username: ");
+        System.out.println("\nEnter your username: ");
         username = keyboard.nextLine().trim();
         if (!employeeMap.containsKey(username)) {
             System.out.println("That username does not exist! Try again.");
             loginAsAdmin();
         }
-        System.out.println("Enter password: ");
+        System.out.println("Enter your password: ");
         password = keyboard.nextLine().trim();
         Employee employee = employeeMap.get(username);
         if ((employee.password).equals(password) && employee.validateUser.equalsIgnoreCase("admin")) {
             System.out.println("Successfully logged in.");
             System.out.println("Welcome, " + employee.validateUser + ": " + employee.firstName + " " + employee.lastName);
             viewAdminMenu();
-        } else
-            System.out.println("Incorrect password. Try again.");
+        } else System.out.println("Incorrect password. Try again.");
         loginAsAdmin();
 
     }
@@ -35,40 +34,37 @@ public class AdminMenu {
                 \t3. Show employees statistics; \s
                 \t4. VIEW CLIENTS LIST;\s
                 \t5. VIEW EMPLOYEES LIST;\s
-                \t6. Return to main menu;
+                \t6. Return to login menu;
                 \t7. Exit.""");
         enterAdminChoice();
     }
 
     private static void enterAdminChoice() {
-        System.out.print("\nChoose an option from 1 to 7: ");
+        System.out.print("Choose an option from 1 to 7: ");
         String choice = scanner.next().trim();
         switch (choice) {
             case "1" -> {
                 Admin.addClient();
-                enterAdminChoice();
+                viewAdminMenu();
             }
             case "2" -> {
                 Admin.registerNewEmployee();
-                enterAdminChoice();
+                viewAdminMenu();
             }
             case "3" -> {
                 viewAdminStatisticMenu();
-                enterAdminChoice();
+                viewAdminMenu();
             }
             case "4" -> {
                 User.viewClientsList();
-                enterAdminChoice();
+                viewAdminMenu();
             }
             case "5" -> {
                 Admin.viewEmployeesList();
-                enterAdminChoice();
+                viewAdminMenu();
             }
-            case "6" -> LoginMenu.seeMainMenu();
-            case "7" -> {
-                System.out.println("Logging out... See you next time!");
-                System.exit(0);
-            }
+            case "6" -> LoginMenu.seeLoginMenu();
+            case "7" -> LoginMenu.loggingOut();
             default -> {
                 System.out.println("Invalid input. Try again!");
                 enterAdminChoice();
@@ -76,8 +72,8 @@ public class AdminMenu {
         }
     }
 
-    private static void showEmployeeStatistics() {
-        System.out.print("\nSelect an option to show an employee statistics: ");
+    protected static void showEmployeeStatistics() {
+        System.out.print(" >>> Select an option to show an employee statistics: ");
         String choice = scanner.next().trim();
         switch (choice) {
             case "1" -> {
@@ -92,7 +88,9 @@ public class AdminMenu {
                 Admin.searchByEverythingInFile();
                 viewAdminStatisticMenu();
             }
-            case "4" -> LoginMenu.seeMainMenu();
+            case "4" -> viewAdminMenu();
+            case "5" -> LoginMenu.seeLoginMenu();
+            case "6" -> LoginMenu.loggingOut();
             default -> {
                 System.out.println("Invalid input. Try again!");
                 showEmployeeStatistics();
@@ -102,12 +100,42 @@ public class AdminMenu {
 
     protected static void viewAdminStatisticMenu() {
         System.out.println("""
-                \nWhat employees statistics would you like to displayed? \s
-                \t1. Search by employee name; \s
-                \t2. Search by week number; \s
-                \t3. Search by everything in Protocol file;
-                \t4. Return to main menu.""");
+                \n >>> What employees statistics would you like to displayed? <<<
+                \t > 1. Search by employee name;
+                \t > 2. Search by week number;
+                \t > 3. Search by everything in Protocol file;
+                \t > 4. Back to main menu;
+                \t > 5. Return to login menu;
+                \t > 6. Exit.""");
         showEmployeeStatistics();
+    }
+
+    protected static void askForANewSearch() {
+        System.out.println("""
+                \n ~~~ Did you want a new search by week? ~~~
+                \t ~~~ 1. Yes
+                \t ~~~ 2. No""");
+        System.out.print("Enter your answer: ");
+        String answer = scanner.next().trim();
+        while (checkInputOnlyContainsNumbers(answer)) {
+            switch (answer) {
+                case "1" -> Admin.searchProtocolByWeek();
+                case "2" -> AdminMenu.viewAdminMenu();
+                default -> System.out.println("Incorrect input!");
+            }
+            askForANewSearch();
+        }
+    }
+
+    private static boolean checkInputOnlyContainsNumbers(String input) {
+        for (char symbol : input.toCharArray()) {
+            if (Character.isAlphabetic(symbol)) {
+                System.out.println("Invalid input! Please, enter a number for answer (1 or 2)!");
+                AdminMenu.askForANewSearch();
+                return false;
+            }
+        }
+        return true;
     }
 
 }

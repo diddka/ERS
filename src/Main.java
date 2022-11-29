@@ -2,13 +2,8 @@ public class Main {
     public static void main(String[] args) {
 
         System.out.print("This is a Company time tracking system...\n");
-        LoginMenu.seeMainMenu();
-        //Employee.createClientProtocol("didka");
+        LoginMenu.seeLoginMenu();
 
-
-//        for (Client cl:ReadFile.readClientFile()) {
-//            System.out.println(cl);
-//        }
     }
 
 }

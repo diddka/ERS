@@ -24,7 +24,7 @@ public abstract class User {
         protected static void viewClientsList() {
         clients = ReadFile.readClientFile();
         if (!clients.isEmpty()) {
-            System.out.println("Clients list: ");
+            System.out.println("\nClients list: ");
             int numeric = 1;
             for (Client client : clients) {
                 System.out.println(numeric + ". " + client);
