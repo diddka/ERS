@@ -7,12 +7,13 @@ import java.util.*;
 
 public class Employee extends User {
     static Scanner scanner = new Scanner(System.in);
+
     public Employee(String[] parts) {
         super(parts);
     }
 
     protected static Employee input() {
-        System.out.print("Enter a validation status (admin or employee): ");
+        System.out.print("\nEnter a validation status (admin or employee): ");
         String validateEmployee = Validation.checkUserStatus();
         System.out.print("Enter an Employee first name: ");
         String firstName = Validation.checkIsValidInput();
@@ -24,9 +25,8 @@ public class Employee extends User {
         String city = Validation.checkIsValidInput();
         System.out.print("Enter an Employee username: ");
         String username = Validation.checkIsValidInput();
-        String password = null;
         //System.out.print(firstName + " " + lastName + ", which is an: " + validateEmployee + " has the following unique password: ");
-        password = PasswordHelper.generateRandomPassword();//String.valueOf(PasswordHelper.createUniquePassword());
+        String password = PasswordHelper.generateRandomPassword();//String.valueOf(PasswordHelper.createUniquePassword());
         System.out.print(firstName + " " + lastName + ", which is an: " + validateEmployee + " has the following unique password: " + password);
         return new Employee(new String[]{firstName, lastName, email, city, username, password, validateEmployee});
     }
@@ -42,7 +42,7 @@ public class Employee extends User {
         try {
             WriteFile.writeEmployeeProtocol(new Protocol(week, date, selectedClient, hours), employee.firstName, employee.lastName);
         } catch (Exception e) {
-            System.out.println(username + ", the Protocol can't be write to file " + protocolFile + " " + e.getMessage());
+            System.out.println("\n" + username + ", the Protocol can't be write to file " + protocolFile + " " + e.getMessage());
         }
     }
 
@@ -60,12 +60,12 @@ public class Employee extends User {
                 if (scanner.hasNextInt()) {
                     hours = scanner.nextInt();
                     if (hours <= 0 || hours > 8) {
-                        System.out.println("Invalid input.\n" + "The value of hours must be bigger than zero and less than eight hours. Try again.");
+                        System.out.println("Invalid input!!!\n" + "The value of hours must be bigger than zero and less than eight hours! Try again!");
                         continue;
                     }
                 } else {
                     scanner.next();
-                    System.out.println("Incorrect input.\n" + "The value of hours must be an integer. Try again.");
+                    System.out.println("Incorrect input!!!\n" + "The value of hours must be an integer! Try again!");
                     continue;
                 }
                 isValidInput = false;
@@ -86,7 +86,7 @@ public class Employee extends User {
         return weekAndDate;
     }
 
-    public static String selectActualClientFromList(String username) {
+    private static String selectActualClientFromList(String username) {
         clients = ReadFile.readClientFile();
         List<Client> actualClientsList = new ArrayList<>();
         checkDateIsBeforeContractExpirationDate(actualClientsList);
@@ -103,15 +103,14 @@ public class Employee extends User {
         LocalDate now = LocalDate.now();
         String currentDate = now.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
         SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
-        Date today = Client.takeTodayDate(currentDate, formatter);
+        Date today = ValidationDate.takeTodayDate(currentDate, formatter);
         Date expirationDate;
-        boolean isBefore;
         boolean isEquals;
+        boolean isBefore;
         for (Client client : clients) {
             try {
                 expirationDate = formatter.parse(client.getContractExpirationDate());
             } catch (ParseException e) {
-                e.printStackTrace();
                 System.out.println("\nReally bad! The exception message is: " + e.getMessage());
                 throw new RuntimeException(e);
             }
@@ -125,7 +124,7 @@ public class Employee extends User {
 
     private static void viewActualClientsList(List<Client> actualClientsList) {
         int numeric = 1;
-        System.out.println("The actual Clients list is: ");
+        System.out.println("\nThe actual Clients list is: ");
         for (Client actualClient : actualClientsList) {
             System.out.println(numeric + ". " + actualClient);
             numeric++;
@@ -163,6 +162,6 @@ public class Employee extends User {
                 ", Country: " + super.city +
                 ", Username: " + super.username +
                 ", Password: " + "******";
-               // ", Validation status: " + super.validateUser;
+        // ", Validation status: " + super.validateUser;
     }
 }

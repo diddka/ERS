@@ -40,6 +40,7 @@ public class ReadFile {
                 Date date2 = simpleDateFormat.parse(client2.getContractExpirationDate());
                 return date1.compareTo(date2);
             } catch (ParseException e) {
+                System.out.println(e.getMessage());
                 e.printStackTrace();
             }
             return 0;

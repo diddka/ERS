@@ -3,8 +3,8 @@ import java.util.Scanner;
 public class LoginMenu {
     static Scanner scanner = new Scanner(System.in);
 
-    public static void seeMainMenu() {
-        System.out.println("Options available: \n\t1. Log as admin; \n\t2. Log as employee; \n\t3. Exit.");
+    public static void seeLoginMenu() {
+        System.out.println("\nOptions available: \n\t1. Log as admin; \n\t2. Log as employee; \n\t3. Exit.");
         selectOption();
     }
 
@@ -14,12 +14,17 @@ public class LoginMenu {
         switch (choice) {
             case "1" -> AdminMenu.loginAsAdmin();
             case "2" -> EmployeeMenu.loginAsEmployee();
-            case "3" -> System.out.println("Logging out... See you next time!");
+            case "3" -> loggingOut();
             default -> {
                 System.out.println("Invalid choice. Try again!");
                 selectOption();
             }
         }
+    }
+
+    public static void loggingOut() {
+        System.out.println("\nLogging out... See you next time!");
+        System.exit(0);
     }
 
 }

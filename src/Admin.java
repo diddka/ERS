@@ -19,9 +19,9 @@ public class Admin extends User {
         try {
             if (checkClientList(newClient)) {
                 WriteFile.writeNewClients(newClient);
-                System.out.println("The client " + newClient.clientName + " with a project: " + newClient.projectName + " is added!");
+                System.out.println("\nThe client " + newClient.clientName + " with a project: " + newClient.projectName + " is added!");
             } else {
-                System.out.println("\nThis client already exist in company Clients list!!!");
+                System.out.println("\nThis client with the same project name is already exist in the Company's Clients list!!!");
             }
 
         } catch (Exception e) {
@@ -58,10 +58,10 @@ public class Admin extends User {
         employeeList = ReadFile.readEmployeeFile();
         for (Employee employee : employeeList) {
             if (registerNewEmployee.firstName.equals(employee.firstName) && registerNewEmployee.lastName.equals(employee.lastName) && registerNewEmployee.username.equals(employee.username)) {
-                System.out.println("\nThis employee already exist in the Company Employees list!!!");
+                System.out.println("\nThis employee already exist in the Company's Employees list!!!");
                 return false;
             } else if (registerNewEmployee.username.equals(employee.username)) {
-                System.out.println("\nThat username exist. Please, change it!");
+                System.out.println("\nThis username is in use by another employee. Please, change it!");
                 return false;
             }
         }
@@ -71,7 +71,7 @@ public class Admin extends User {
     protected static void viewEmployeesList() {
         employeeList = ReadFile.readEmployeeFile();
         if (!employeeList.isEmpty()) {
-            System.out.println("Employees list: ");
+            System.out.println("\nEmployees list: ");
             for (Employee employee : employeeList) {
                 System.out.println(employee);
             }
@@ -81,7 +81,7 @@ public class Admin extends User {
     }
 
     protected static void searchEmployeeByName() {
-        System.out.println("Enter the name of the search employee: ");
+        System.out.print("\nEnter the name of the search employee: ");
         protocolList = ReadFile.readProtocolFile();
         String search = scanner.nextLine().trim();
         checkSearch(search);
@@ -91,7 +91,7 @@ public class Admin extends User {
         if (!search.isEmpty()) {
             Admin.printTheProtocolOfTheFindedEmployee(search);
         } else {
-            System.out.println("The search cannot be empty!");
+            System.out.println("\nThe search cannot be empty!");
         }
     }
 
@@ -102,12 +102,13 @@ public class Admin extends User {
                 if (search.equals(protocol.getEmployeeName())) {
                     sumList.add(protocol);
                 } else if (checkSearchExistEmployee(search)) {
-                    System.out.println("The employee doesn't exist!");
+                    System.out.println("\nThe employee doesn't exist!");
+                    AdminMenu.viewAdminStatisticMenu();
                     break;
                 }
             }
         }
-        System.out.print("> > > > > For employee: " + search + " < < < < <\n");
+        System.out.print("\n> > > > > For employee: " + search + " < < < < <\n");
         calculateTime(sumList);
         AdminMenu.viewAdminStatisticMenu();
     }
@@ -117,7 +118,7 @@ public class Admin extends User {
             if (Character.isAlphabetic(symbol)) {
                 return true;
             } else {
-                System.out.println("Invalid input!!! \nThe search cannot be integer! Please, ENTER an employee name!!!");
+                System.out.println("\nInvalid input!!! \nThe search cannot be integer! Please, ENTER an employee name!!!");
                 Admin.searchEmployeeByName();
             }
         }
@@ -137,63 +138,44 @@ public class Admin extends User {
         List<Protocol> sumProtocolHours = new ArrayList<>();
         try {
             protocolList = ReadFile.readProtocolFile();
-            System.out.println("Enter a number of week to search: ");
+            System.out.print("\nEnter a number of week to search: ");
             String searchWeek = scanner.next();
             Protocol protocolLastIndex = protocolList.get(protocolList.size() - 1);
             Protocol protocolFirstIndex = protocolList.get(0);
             int lastWeek = Integer.parseInt(protocolLastIndex.weekOfYear);
             int firsWeek = Integer.parseInt(protocolFirstIndex.weekOfYear);
-            int findWeek = Integer.parseInt(searchWeek);
-            if (checkMethodsInputIfDigit(searchWeek)) {
-                for (Protocol protocol : protocolList) {
-                    try {
-                        if (searchWeek.equals(protocol.weekOfYear)) {
-                            sumProtocolHours.add(protocol);
-                        } else if (findWeek > lastWeek || findWeek <= 0 || findWeek < firsWeek) {
-                            System.out.println("There is NO such week number!!! Enter number between \"" + protocolFirstIndex.weekOfYear + "\" and \"" + protocolLastIndex.weekOfYear + "\"");
-                            break;
-                        }
-                    } catch (Exception e) {
-                        System.out.println(e.getMessage());
-                        searchProtocolByWeek();
-                    }
-                }
+            int findWeek;
+            try {
+                findWeek = Integer.parseInt(searchWeek);
+                checkIfProtocolHasNumberOfWeek(sumProtocolHours, searchWeek, protocolLastIndex, protocolFirstIndex, lastWeek, firsWeek, findWeek);
+            } catch (NumberFormatException e) {
+                System.out.println("\nInvalid input! Please, enter a number!");
             }
-            System.out.print("> > > > > For week: " + searchWeek + " < < < < <\n");
+            System.out.print("\n> > > > > For week: " + searchWeek + " < < < < <\n");
             calculateTime(sumProtocolHours);
-        }catch (IndexOutOfBoundsException e){
+        } catch (IndexOutOfBoundsException e) {
             System.out.println(e.getMessage());
         }
-        askForANewSearch();
+        AdminMenu.askForANewSearch();
     }
 
-    private static boolean checkMethodsInputIfDigit(String input) {
-        for (char symbol : input.toCharArray()) {
-            if (Character.isAlphabetic(symbol)) {
-                System.out.println("Invalid input! Please, enter a number!");
-                Admin.askForANewSearch();
-                return false;
+    private static void checkIfProtocolHasNumberOfWeek(List<Protocol> sumProtocolHours, String searchWeek, Protocol protocolLastIndex, Protocol protocolFirstIndex, int lastWeek, int firsWeek, int findWeek) {
+        for (Protocol protocol : protocolList) {
+            try {
+                if (searchWeek.equals(protocol.weekOfYear)) {
+                    sumProtocolHours.add(protocol);
+                } else if (findWeek > lastWeek || findWeek <= 0 || findWeek < firsWeek) {
+                    System.out.println("\nThere is NO such week number!!! Enter a number between \"" + protocolFirstIndex.weekOfYear + "\" and \"" + protocolLastIndex.weekOfYear + "\"");
+                    break;
+                }
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+                searchProtocolByWeek();
             }
         }
-        return true;
     }
 
-    private static void askForANewSearch() {
-        System.out.println("""
-                Did you want a new search by week?
-                \t1. Yes
-                \t2. No""");
-        String answer = scanner.next();
-        while (checkMethodsInputIfDigit(answer)) {
-            switch (answer) {
-                case "1" -> searchProtocolByWeek();
-                case "2" -> AdminMenu.viewAdminMenu();
-                default -> System.out.println("Incorrect input!");
-            }
-            askForANewSearch();
-        }
-    }
-    private static void calculateTime(List<Protocol> calc){
+    private static void calculateTime(List<Protocol> calc) {
         int sum = 0;
         for (Protocol protocol : calc) {
             System.out.println(protocol);
@@ -203,7 +185,7 @@ public class Admin extends User {
     }
 
     protected static void searchByEverythingInFile() {
-        System.out.println("Enter that you want to search: ");
+        System.out.print("\nEnter that you want to search: ");
         String search = scanner.nextLine().trim();
         try {
             FileSearch.parseFile("Protocol.csv", search);
@@ -211,6 +193,5 @@ public class Admin extends User {
             throw new RuntimeException(e.getMessage());
         }
     }
-
 
 }
